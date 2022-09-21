@@ -61,7 +61,7 @@ export default {
      * @param {Object} payload newColor {String} 新颜色
      */
     apply (state, { oldColor, newColor }) {
-      var options = {
+      const options = {
         oldColors: cloneDeep(forElementUI.getElementUISeries(oldColor)),
         newColors: cloneDeep(forElementUI.getElementUISeries(newColor))
       };

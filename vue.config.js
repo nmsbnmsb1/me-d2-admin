@@ -64,8 +64,10 @@ module.exports = {
 	publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
 	lintOnSave: true,
 	devServer: {
-		publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
-		disableHostCheck: process.env.NODE_ENV === 'development',
+		// publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
+		// disableHostCheck: process.env.NODE_ENV === 'development',
+		host: 'localhost',
+		allowedHosts: 'all',
 	},
 	css: {
 		loaderOptions: {
@@ -209,6 +211,8 @@ module.exports = {
 		// svg
 		const svgRule = config.module.rule('svg');
 		svgRule.uses.clear();
+		svgRule.delete('type');
+		svgRule.delete('generator');
 		svgRule.include
 			.add(resolve('src/assets/svg-icons/icons'))
 			.end()

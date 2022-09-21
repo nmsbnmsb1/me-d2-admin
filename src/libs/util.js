@@ -22,7 +22,7 @@ util.title = function (titleText) {
  * @param {String} url 地址
  */
 util.open = function (url) {
-	var a = document.createElement('a');
+	const a = document.createElement('a');
 	a.setAttribute('href', url);
 	a.setAttribute('target', '_blank');
 	a.setAttribute('id', 'd2admin-link-temp');

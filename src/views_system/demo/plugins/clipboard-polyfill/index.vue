@@ -44,7 +44,7 @@ export default {
       clipboard.writeText(this.text);
     },
     copyHtml () {
-      var dt = new clipboard.DT();
+      const dt = new clipboard.DT();
       dt.setData('text/html', this.html);
       clipboard.write(dt);
     },

@@ -48,7 +48,7 @@ export default {
           error,
           trace: get(error, 'stack'),
           source: `${source}@${lineno}:${colno}`,
-          event: event
+          event
         }
       });
     };

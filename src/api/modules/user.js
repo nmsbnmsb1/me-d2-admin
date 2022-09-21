@@ -22,7 +22,7 @@ export function USER_LOGIN_BY_TOKEN() {
 			}
 		}
 		if (user) {
-			util.cookies.set('token', `${user.username}-${faker.random.uuid()}`);
+			util.cookies.set('token', `${user.username}-${faker.datatype.uuid()}`);
 			return tools.responseSuccess({ ...user });
 		}
 		return tools.responseError({}, '账号或密码不正确');
@@ -43,7 +43,7 @@ export function USER_LOGIN(data = {}) {
 	mock.onAny('/login').reply((config) => {
 		const user = find(users, tools.parse(config.data));
 		if (user) {
-			util.cookies.set('token', `${user.username}-${faker.random.uuid()}`);
+			util.cookies.set('token', `${user.username}-${faker.datatype.uuid()}`);
 			return tools.responseSuccess({ ...user });
 		}
 		tools.responseError({}, '账号或密码不正确');

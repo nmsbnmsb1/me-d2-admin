@@ -17,9 +17,10 @@ module.exports = {
 		'vue/no-use-v-if-with-v-for': 'off',
 		camelcase: 'off',
 		'vue/experimental-script-setup-vars': 'off',
+		'vue/multi-word-component-names': 'off',
 	},
 	parserOptions: {
-		parser: 'babel-eslint',
+		parser: '@babel/eslint-parser',
 	},
 	overrides: [
 		{
