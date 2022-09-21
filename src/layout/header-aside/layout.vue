@@ -76,19 +76,19 @@
 </template>
 
 <script>
-import d2MenuSide from './components/menu-side'
-import d2MenuHeader from './components/menu-header'
-import d2Tabs from './components/tabs'
-import d2HeaderFullscreen from './components/header-fullscreen'
-import d2HeaderLocales from './components/header-locales'
-import d2HeaderSearch from './components/header-search'
-import d2HeaderSize from './components/header-size'
-import d2HeaderTheme from './components/header-theme'
-import d2HeaderUser from './components/header-user'
-import d2HeaderLog from './components/header-log'
-import d2HeaderColor from './components/header-color'
-import { mapState, mapGetters, mapActions } from 'vuex'
-import mixinSearch from './mixins/search'
+import d2MenuSide from './components/menu-side';
+import d2MenuHeader from './components/menu-header';
+import d2Tabs from './components/tabs';
+import d2HeaderFullscreen from './components/header-fullscreen';
+import d2HeaderLocales from './components/header-locales';
+import d2HeaderSearch from './components/header-search';
+import d2HeaderSize from './components/header-size';
+import d2HeaderTheme from './components/header-theme';
+import d2HeaderUser from './components/header-user';
+import d2HeaderLog from './components/header-log';
+import d2HeaderColor from './components/header-color';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import mixinSearch from './mixins/search';
 export default {
   name: 'd2-layout-header-aside',
   mixins: [
@@ -113,7 +113,7 @@ export default {
       asideWidth: '200px',
       // [侧边栏宽度] 折叠状态
       asideWidthCollapse: '65px'
-    }
+    };
   },
   computed: {
     ...mapState('d2admin', {
@@ -132,8 +132,8 @@ export default {
     routerViewKey () {
       // 默认情况下 key 类似 __transition-n-/foo
       // 这里的字符串操作是为了最终 key 的格式和原来相同 类似 __transition-n-__stamp-time-/foo
-      const stamp = this.$route.meta[`__stamp-${this.$route.path}`] || ''
-      return `${stamp ? `__stamp-${stamp}-` : ''}${this.$route.path}`
+      const stamp = this.$route.meta[`__stamp-${this.$route.path}`] || '';
+      return `${stamp ? `__stamp-${stamp}-` : ''}${this.$route.path}`;
     },
     /**
      * @description 最外层容器的背景图片样式
@@ -141,7 +141,7 @@ export default {
     styleLayoutMainGroup () {
       return this.themeActiveSetting.backgroundImage
         ? { backgroundImage: `url('${this.$baseUrl}${this.themeActiveSetting.backgroundImage}')` }
-        : {}
+        : {};
     }
   },
   methods: {
@@ -152,10 +152,10 @@ export default {
      * 接收点击切换侧边栏的按钮
      */
     handleToggleAside () {
-      this.asideCollapseToggle()
+      this.asideCollapseToggle();
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -4,7 +4,7 @@
 
 <script>
 // https://github.com/inorganik/CountUp.js
-import { CountUp } from 'countup.js'
+import { CountUp } from 'countup.js';
 export default {
   name: 'd2-count-up',
   props: {
@@ -35,15 +35,15 @@ export default {
   data () {
     return {
       c: null
-    }
+    };
   },
   watch: {
     end (value) {
-      if (this.c && this.c.update) this.c.update(value)
+      if (this.c && this.c.update) this.c.update(value);
     }
   },
   mounted () {
-    this.init()
+    this.init();
   },
   methods: {
     init () {
@@ -53,12 +53,12 @@ export default {
           decimalPlaces: this.decimals,
           duration: this.duration,
           ...this.options
-        })
+        });
         this.c.start(() => {
-          if (this.callback) this.callback(this.c)
-        })
+          if (this.callback) this.callback(this.c);
+        });
       }
     }
   }
-}
+};
 </script>

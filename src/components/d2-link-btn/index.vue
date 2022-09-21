@@ -28,5 +28,5 @@ export default {
       default: 'https://github.com/d2-projects'
     }
   }
-}
+};
 </script>

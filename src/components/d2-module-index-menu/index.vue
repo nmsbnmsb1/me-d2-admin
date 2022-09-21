@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import d2ModuleIndexMenuGroup from './components/group'
+import d2ModuleIndexMenuGroup from './components/group';
 export default {
   components: {
     d2ModuleIndexMenuGroup
@@ -25,14 +25,14 @@ export default {
   data () {
     return {
       show: false
-    }
+    };
   },
   mounted () {
     setTimeout(() => {
-      this.show = true
-    }, 300)
+      this.show = true;
+    }, 300);
   }
-}
+};
 </script>
 
 <style lang="scss">

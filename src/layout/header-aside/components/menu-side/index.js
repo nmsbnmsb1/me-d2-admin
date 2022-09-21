@@ -1,6 +1,6 @@
-import { mapState } from 'vuex'
-import menuMixin from '../mixin/menu'
-import { createMenu } from '../libs/util.menu'
+import { mapState } from 'vuex';
+import menuMixin from '../mixin/menu';
+import { createMenu } from '../libs/util.menu';
 
 export default {
   name: 'd2-layout-header-aside-menu-side',
@@ -28,7 +28,7 @@ export default {
             : null
         }
       </d2-scrollbar>
-    </div>
+    </div>;
   },
   computed: {
     ...mapState('d2admin/menu', [
@@ -37,4 +37,4 @@ export default {
       'asideTransition'
     ])
   }
-}
+};

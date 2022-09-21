@@ -34,10 +34,10 @@ export default {
   },
   methods: {
     handleLinkClick () {
-      this.$open(this.link)
+      this.$open(this.link);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

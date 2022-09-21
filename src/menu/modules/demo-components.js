@@ -85,4 +85,4 @@ export default {
     { path: '/demo/components/highlight', title: '代码高亮显示', icon: 'code' },
     { path: '/demo/components/json-tree', title: 'JSON 展示', icon: 'sitemap' }
   ]
-}
+};

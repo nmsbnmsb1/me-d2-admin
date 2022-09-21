@@ -17,7 +17,7 @@ export default {
       default: 'https://d2.pub/zh/doc/d2-admin'
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

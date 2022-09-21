@@ -8,4 +8,4 @@ export default {
   initialFrameWidth: '100%',
   // 关闭自动保存
   enableAutoSave: false
-}
+};

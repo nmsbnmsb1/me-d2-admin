@@ -1,12 +1,12 @@
 {
-  "name": "d2-admin",
-  "version": "1.25.0",
+  "name": "me-d2-admin-template",
+  "version": "0.1.25.0",
   "scripts": {
-    "serve": "vue-cli-service serve --open",
+    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve --open",
     "start": "npm run serve",
     "dev": "npm run serve",
-    "build": "vue-cli-service build --report",
-    "build:preview": "NODE_OPTIONS=--max_old_space_size=4096 vue-cli-service build --mode preview",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --report",
+    "build:preview": "NODE_OPTIONS=--max_old_space_size=4096 NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --mode preview",
     "lint": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit"
   },

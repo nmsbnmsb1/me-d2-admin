@@ -26,4 +26,4 @@ export default {
     { path: '/demo/plugins/day', title: '日期计算', icon: 'clock-o' },
     { path: '/demo/plugins/js-cookie', title: 'Cookie 读写', icon: 'asterisk' }
   ]
-}
+};

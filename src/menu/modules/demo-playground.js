@@ -130,4 +130,4 @@ export default {
     { path: '/demo/playground/env', title: '环境信息', icon: 'exclamation-circle' },
     { path: '/demo/playground/locales', title: '国际化', icon: 'language' }
   ]
-}
+};

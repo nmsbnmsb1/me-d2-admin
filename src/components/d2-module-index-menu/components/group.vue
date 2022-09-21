@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import d2ModuleIndexMenuItem from './item'
+import d2ModuleIndexMenuItem from './item';
 export default {
   name: 'd2-module-index-menu-group',
   components: {
@@ -51,24 +51,24 @@ export default {
   },
   computed: {
     groupClassName () {
-      return `d2-module-index-menu-group--${this.level}`
+      return `d2-module-index-menu-group--${this.level}`;
     },
     titleClassName () {
-      return `d2-module-index-menu-group--title-${this.level}`
+      return `d2-module-index-menu-group--title-${this.level}`;
     },
     isTitle () {
       // 标题中含有 首页 文字
       if ((this.menu.title || '').indexOf('首页') > 0) {
-        return true
+        return true;
       }
       // 图标为 home
       if (this.menu.icon === 'home') {
-        return true
+        return true;
       }
-      return false
+      return false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

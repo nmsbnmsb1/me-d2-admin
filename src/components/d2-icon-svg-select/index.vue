@@ -110,7 +110,7 @@ export default {
       currentValue: '',
       // 搜索的文字
       searchText: ''
-    }
+    };
   },
   computed: {
     // 输入框上绑定的设置
@@ -119,34 +119,34 @@ export default {
         placeholder: this.placeholder,
         clearable: this.clearable,
         ...this.$attrs
-      }
+      };
     },
     // 是否在搜索
     searchMode () {
-      return !!this.searchText
+      return !!this.searchText;
     },
     // 过滤后的图标
     iconFilted () {
-      return this.$IconSvg.filter(icon => icon.indexOf(this.searchText) >= 0)
+      return this.$IconSvg.filter(icon => icon.indexOf(this.searchText) >= 0);
     }
   },
   watch: {
     value (value) {
-      this.currentValue = value
+      this.currentValue = value;
     }
   },
   created () {
-    this.currentValue = this.value
+    this.currentValue = this.value;
   },
   methods: {
     selectIcon (iconName = '') {
-      this.$emit('input', iconName)
+      this.$emit('input', iconName);
       if (iconName && this.autoClose) {
-        this.pop = false
+        this.pop = false;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

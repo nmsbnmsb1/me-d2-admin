@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+#
+/refs
+package-lock.json
+pnpm-lock.yaml
+commit

@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import icon from './data/index'
+import icon from './data/index';
 export default {
   name: 'd2-icon-select',
   props: {
@@ -120,7 +120,7 @@ export default {
       // 不是搜索的时候显示的折叠面板绑定的展开数据
       collapseActive: []
       // collapseActive: [...Array(icon.length)].map((e, i) => i)
-    }
+    };
   },
   computed: {
     // 输入框上绑定的设置
@@ -129,37 +129,37 @@ export default {
         placeholder: this.placeholder,
         clearable: this.clearable,
         ...this.$attrs
-      }
+      };
     },
     // 是否在搜索
     searchMode () {
-      return !!this.searchText
+      return !!this.searchText;
     },
     // 过滤后的图标
     iconFilted () {
       return this.icon.map(iconClass => ({
         title: iconClass.title,
         icon: iconClass.icon.filter(icon => icon.indexOf(this.searchText) >= 0)
-      })).filter(iconClass => iconClass.icon.length > 0)
+      })).filter(iconClass => iconClass.icon.length > 0);
     }
   },
   watch: {
     value (value) {
-      this.currentValue = value
+      this.currentValue = value;
     }
   },
   created () {
-    this.currentValue = this.value
+    this.currentValue = this.value;
   },
   methods: {
     selectIcon (iconName = '') {
-      this.$emit('input', iconName)
+      this.$emit('input', iconName);
       if (iconName && this.autoClose) {
-        this.pop = false
+        this.pop = false;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
