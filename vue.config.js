@@ -62,6 +62,7 @@ keys(pages).forEach((name) => {
 
 module.exports = {
 	publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
+	outputDir: 'dist',
 	lintOnSave: true,
 	devServer: {
 		// publicPath: process.env.VUE_APP_PUBLIC_PATH || '/',
@@ -91,7 +92,7 @@ module.exports = {
 			configNew.plugins = [
 				// gzip
 				new CompressionWebpackPlugin({
-					filename: '[path].gz[query]',
+					filename: '[path][base].gz',
 					test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
 					threshold: 10240,
 					minRatio: 0.8,

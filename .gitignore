@@ -80,9 +80,11 @@ typings/
 *.sw?
 
 
-# 
+#
 .DS_Store
 package-lock.json
 pnpm-lock.yaml
-refs
 commit
+/refs
+/dist*
+node_modules

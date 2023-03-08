@@ -18,6 +18,8 @@ module.exports = {
 		camelcase: 'off',
 		'vue/experimental-script-setup-vars': 'off',
 		'vue/multi-word-component-names': 'off',
+		'prefer-const': 'off',
+		'n/no-callback-literal': 0,
 	},
 	parserOptions: {
 		parser: '@babel/eslint-parser',
