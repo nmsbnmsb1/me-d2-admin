@@ -1,96 +1,87 @@
-import { Message } from 'element-ui';
+import Vue from 'vue';
 import axios from 'axios';
 import Adapter from 'axios-mock-adapter';
-import { get, isEmpty, merge } from 'lodash';
+import { get } from 'lodash';
 import qs from 'qs';
 import util from '@/libs/util';
-import store from '@/store';
+import { errorLog, errorCreate } from './tools';
 
-/**
- * @description 记录和显示错误
- * @param {Error} error 错误对象
- */
-function handleError(error) {
-	// 添加到日志
-	store.dispatch('d2admin/log/push', {
-		message: '数据请求异常',
-		type: 'danger',
-		meta: {
-			error,
-		},
-	});
-	// 打印到控制台
-	if (process.env.NODE_ENV === 'development') {
-		util.log.danger('>>>>>> Error >>>>>>');
-		console.log(error);
-	}
-	// 显示提示
-	Message({
-		message: error.message,
-		type: 'error',
-		duration: 5 * 1000,
-	});
-}
+// 需要跳转登录页面的code
+const loginCode = ['sys.invalid_token', 'sys.invalid_user', 'sys.user_forbidden'];
 
 /**
  * @description 创建请求实例
  */
 function createService() {
 	// 创建一个 axios 实例
-	const service = axios.create();
+	const service = axios.create({
+		method: 'post',
+		baseURL: process.env.VUE_APP_API,
+		timeout: 15000, // 请求超时时间
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+		transformRequest: [(data) => qs.stringify(data)],
+	});
 	// 请求拦截
 	service.interceptors.request.use(
-		(config) => config,
+		(config) => {
+			// 在请求发送之前做一些处理
+			const token = util.cookies.get('token');
+			// 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+			if (token) config.headers.Token = token;
+			//
+			//console.log(config);
+			return config;
+		},
 		(error) => {
 			// 发送失败
-			console.log(error);
+			errorLog(error);
 			return Promise.reject(error);
 		}
 	);
 	// 响应拦截
 	service.interceptors.response.use(
 		(response) => {
-			// http 状态码 200 情况
-			// 根据 前后端约定的 response.data.code 判断接口是否请求成功
-			// 例如 接口返回数据为
-			// {
-			//   code: 0,
-			//   msg: 'success',
-			//   data: {
-			//     list: [],
-			//     count: 0
-			//   }
-			// }
-			// 此时
-			// response.data.code :
-			// 0
-			// response.data.msg :
-			// 'success'
-			// response.data.data : (在调用接口)
-			// {
-			//   list: [],
-			//   count: 0
-			// }
-			// 默认约定 code 为 0 时代表成功
-			// 你也可以不使用这种方法，改为在下面的 http 错误拦截器里做处理
-
-			// 没有 code 视为非项目接口不作处理
-			if (response.data.code === undefined) {
-				return response.data;
+			const headers = response.headers;
+			if (headers && headers.token) util.cookies.set('token', headers.token);
+			//
+			// dataAxios 是 axios 返回数据中的 data
+			const dataAxios = response.data;
+			// 这个状态码是和后端约定的
+			const { code } = dataAxios;
+			// 根据 code 进行判断
+			if (code === 10000) {
+				// 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
+				return dataAxios.data;
 			}
-
-			// 有 code 判断为项目接口请求
-			switch (response.data.code) {
-				// 返回响应内容
-				case 0:
-					return response.data.data;
-				// 例如在 code 401 情况下退回到登录页面
-				case 401:
-					throw new Error('请重新登录');
-				// 根据需要添加其它判断
-				default:
-					throw new Error(`${response.data.msg}: ${response.config.url}`);
+			//
+			// 有 code 代表这是一个后端接口 可以进行进一步的判断
+			// switch (code) {
+			// 	case 0:
+			// 		// [ 示例 ] code === 0 代表没有错误
+			// 		return dataAxios.data;
+			// 	case 'xxx':
+			// 		// [ 示例 ] 其它和后台约定的 code
+			// 		errorCreate(`[ code: xxx ] ${dataAxios.msg}: ${response.config.url}`);
+			// 		break;
+			// 	default:
+			// 		// 不是正确的 code
+			// 		errorCreate(`${dataAxios.msg}: ${response.config.url}`);
+			// 		break;
+			// }
+			if (dataAxios.code) {
+				errorCreate(`${dataAxios.data.desc || dataAxios.data}`);
+			} else {
+				errorCreate(`${dataAxios.msg}: ${(dataAxios.data && dataAxios.data.desc) || dataAxios.data}`);
 			}
+			if (loginCode.includes(dataAxios.code) || loginCode.includes(dataAxios.msg)) {
+				if (location.href.search('login') !== -1) {
+					setTimeout(() => location.reload(), 500);
+				} else {
+					setTimeout(() => Vue.prototype.$routerInstance.push({ name: 'login' }), 500);
+				}
+			}
+			//
+			return Promise.reject(dataAxios);
 		},
 		(error) => {
 			const status = get(error, 'response.status');
@@ -131,15 +122,11 @@ function createService() {
 				default:
 					break;
 			}
-			handleError(error);
-			throw error;
+			errorLog(error);
+			return Promise.reject(error);
 		}
 	);
 	return service;
-}
-
-function stringify(data) {
-	return qs.stringify(data, { allowDots: true, encode: false });
 }
 
 /**
@@ -150,27 +137,16 @@ function createRequest(service) {
 	return function (config) {
 		const token = util.cookies.get('token');
 		const configDefault = {
+			method: 'post',
 			headers: {
-				Authorization: token,
-				'Content-Type': get(config, 'headers.Content-Type', 'application/json'),
+				'Content-Type': get(config, 'headers.Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8'),
+				Token: token,
 			},
-			timeout: 5000,
+			timeout: 15000,
 			baseURL: process.env.VUE_APP_API,
 			data: {},
 		};
-		const option = merge(configDefault, config);
-		// 处理 get 请求的参数
-		// 请根据实际需要修改
-		if (!isEmpty(option.params)) {
-			option.url = option.url + '?' + stringify(option.params);
-			option.params = {};
-		}
-		// 当需要以 form 形式发送时 处理发送的数据
-		// 请根据实际需要修改
-		if (!isEmpty(option.data) && option.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-			option.data = stringify(option.data);
-		}
-		return service(option);
+		return service(Object.assign(configDefault, config));
 	};
 }
 

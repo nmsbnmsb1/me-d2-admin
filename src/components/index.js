@@ -3,6 +3,9 @@ import Vue from 'vue';
 import d2Container from './d2-container';
 import d2ContainerFrame from './d2-container-frame';
 import d2LinkBtn from './d2-link-btn';
+//
+import Pagination from './pagination';
+import Upload from './upload';
 
 // 注意 有些组件使用异步加载会有影响
 Vue.component('d2-container', d2Container);
@@ -20,3 +23,6 @@ Vue.component('d2-module-index-menu', () => import('./d2-module-index-menu'));
 Vue.component('d2-quill', () => import('./d2-quill'));
 Vue.component('d2-scrollbar', () => import('./d2-scrollbar'));
 Vue.component('d2-ueditor', () => import('./d2-ueditor'));
+//
+Vue.component('pagination', Pagination);
+Vue.component('upload', Upload);
