@@ -6,10 +6,7 @@ import { cloneDeep } from 'lodash';
 const adapter = new LocalStorage(`${process.env.VUE_APP_ID}-${process.env.VUE_APP_VERSION}`);
 const db = low(adapter);
 
-db.defaults({
-	sys: {},
-	database: {},
-}).write();
+db.defaults({ sys: {}, database: {} }).write();
 
 export default db;
 
@@ -23,11 +20,23 @@ export default db;
  * @returns {String} 可以直接使用的路径
  */
 export function pathInit({ dbName = 'database', path = '', user = true, validator = () => true, defaultValue = '' }) {
-	const uuid = util.cookies.get('uuid') || 'default';
-	const currentPath = `${dbName}.${user ? `user.${uuid}` : 'public'}${path ? `.${path}` : ''}`;
-	const value = db.get(currentPath).value();
+	let names = [`${dbName}.`];
+	//
+	let uuid = util.cookies.get('uuid');
+	if (!uuid) {
+		names.push('public');
+	} else {
+		names.push(`user.${uuid}`);
+		//
+		let role_id = util.cookies.get('role_id');
+		if (role_id) names.push(`/${role_id}`);
+	}
+	if (path) names.push(`.${path}`);
+	//
+	let currentPath = names.join('');
+	let value = db.get(currentPath).value();
 	if (!(value !== undefined && validator(value))) {
-		db.set(currentPath, defaultValue).write();
+		db.set(currentPath, typeof defaultValue === 'function' ? defaultValue() : defaultValue).write();
 	}
 	return currentPath;
 }
@@ -41,14 +50,7 @@ export function pathInit({ dbName = 'database', path = '', user = true, validato
  * @param {Object} payload user {Boolean} 是否区分用户
  */
 export function dbSet({ dbName = 'database', path = '', value = '', user = false }) {
-	db.set(
-		pathInit({
-			dbName,
-			path,
-			user,
-		}),
-		value
-	).write();
+	db.set(pathInit({ dbName, path, user }), value).write();
 }
 
 /**
@@ -60,18 +62,7 @@ export function dbSet({ dbName = 'database', path = '', value = '', user = false
  * @param {Object} payload user {Boolean} 是否区分用户
  */
 export function dbGet({ dbName = 'database', path = '', defaultValue = '', user = false }) {
-	return cloneDeep(
-		db
-			.get(
-				pathInit({
-					dbName,
-					path,
-					user,
-					defaultValue,
-				})
-			)
-			.value()
-	);
+	return cloneDeep(db.get(pathInit({ dbName, path, user, defaultValue })).value());
 }
 
 /**
@@ -79,13 +70,5 @@ export function dbGet({ dbName = 'database', path = '', defaultValue = '', user 
  * @param {Object} payload user {Boolean} 是否区分用户
  */
 export function database({ dbName = 'database', path = '', user = false, validator = () => true, defaultValue = '' } = {}) {
-	return db.get(
-		pathInit({
-			dbName,
-			path,
-			user,
-			validator,
-			defaultValue,
-		})
-	);
+	return db.get(pathInit({ dbName, path, user, validator, defaultValue }));
 }

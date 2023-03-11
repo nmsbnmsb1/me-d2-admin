@@ -14,6 +14,10 @@ import i18n from '@/locales/i18n';
 import pluginError from '@/plugin/error';
 import pluginLog from '@/plugin/log';
 import pluginOpen from '@/plugin/open';
+//
+import pluginConstants from '@/plugin/constants';
+import pluginHelper from '@/plugin/helper';
+import pluginFilters from '@/plugin/filters';
 
 export default {
 	async install(Vue, options) {
@@ -36,5 +40,10 @@ export default {
 		Vue.use(pluginError);
 		Vue.use(pluginLog);
 		Vue.use(pluginOpen);
+
+		//custom
+		Vue.use(pluginConstants);
+		Vue.use(pluginHelper);
+		Vue.use(pluginFilters);
 	},
 };

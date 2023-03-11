@@ -3,22 +3,28 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const d2admin = { namespaced: true, modules: {} };
-const d2adminFiles = require.context('./d2admin', false, /\.js$/);
-d2adminFiles.keys().forEach((key) => {
-	d2admin.modules[key.replace(/(\.\/|\.js)/g, '')] = d2adminFiles(key).default;
-});
-
 const modules = {};
-const files = require.context('./', false, /\.js$/);
+const files = require.context('./modules', true, /\.js$/);
 files.keys().forEach((key) => {
-	if (key.endsWith('index.js')) return;
-	modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default;
+	let mkey = key.replace(/(\.\/|\.js)/g, '');
+	let de = files(key).default;
+	//de.namespaced = true;
+	//
+	if (mkey.indexOf('/') > 0) {
+		let tmp = mkey.split('/');
+		let mainModuleName = tmp[0];
+		let childModuleName = tmp.slice(1).join('/');
+		if (!modules[mainModuleName]) modules[mainModuleName] = { namespaced: true, modules: {} };
+		modules[mainModuleName].modules[childModuleName] = de;
+	} else {
+		modules[mkey] = de;
+	}
 });
 
-export default new Vuex.Store({
-	modules: {
-		d2admin,
-		...modules,
-	},
-});
+//console.log(modules);
+
+const store = new Vuex.Store({ modules });
+Vue.prototype.$storeInstance = store;
+export default store;
+
+//console.log(store);

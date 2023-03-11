@@ -83,8 +83,10 @@
 
 <script>
 import dayjs from 'dayjs';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import localeMixin from '@/locales/mixin.js';
+import Constants from '@/libs/constants';
+
 export default {
 	mixins: [localeMixin],
 	data() {
@@ -93,54 +95,19 @@ export default {
 			time: dayjs().format('HH:mm:ss'),
 			// 快速选择用户
 			dialogVisible: false,
-			users: [
-				{
-					name: 'Admin',
-					username: 'admin',
-					password: 'admin',
-				},
-				{
-					name: 'Editor',
-					username: 'editor',
-					password: 'editor',
-				},
-				{
-					name: 'User1',
-					username: 'user1',
-					password: 'user1',
-				},
-			],
+			users: [{ name: 'Yunying', username: 'yunying', password: 'yunying' }],
 			// 表单
-			formLogin: {
-				username: 'admin',
-				password: 'admin',
-				code: 'v9am',
-			},
+			formLogin: { username: 'yunying', password: 'yunying', code: 'v9am' },
 			// 表单校验
 			rules: {
-				username: [
-					{
-						required: true,
-						message: '请输入用户名',
-						trigger: 'blur',
-					},
-				],
-				password: [
-					{
-						required: true,
-						message: '请输入密码',
-						trigger: 'blur',
-					},
-				],
-				code: [
-					{
-						required: true,
-						message: '请输入验证码',
-						trigger: 'blur',
-					},
-				],
+				username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+				password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+				code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
 			},
 		};
+	},
+	computed: {
+		...mapState('user', ['currentRole']),
 	},
 	mounted() {
 		this.timeInterval = setInterval(() => {
@@ -151,7 +118,8 @@ export default {
 		clearInterval(this.timeInterval);
 	},
 	methods: {
-		...mapActions('user', ['login']),
+		...mapActions('user', ['loginByUsername']),
+		//
 		refreshTime() {
 			this.time = dayjs().format('HH:mm:ss');
 		},
@@ -174,12 +142,15 @@ export default {
 					// 登录
 					// 注意 这里的演示没有传验证码
 					// 具体需要传递的数据请自行修改代码
-					this.login({
+					this.loginByUsername({
 						username: this.formLogin.username,
 						password: this.formLogin.password,
 					}).then(() => {
 						// 重定向对象不存在则返回顶层路径
-						this.$router.replace(this.$route.query.redirect || '/');
+						//this.$router.replace(this.$route.query.redirect || '/');
+						//loading.close();
+						//进入对应角色的页面
+						this.$router.replace(this.$route.query.redirect || `/${Constants.Roles[this.currentRole.id].key}`);
 					});
 				} else {
 					// 登录表单校验失败
@@ -193,7 +164,6 @@ export default {
 
 <style lang="scss">
 .page-login {
-	@extend %unable-select;
 	$backgroundColor: #f0f2f5;
 	// ---
 	background-color: $backgroundColor;

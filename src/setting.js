@@ -37,11 +37,6 @@ export default {
 				name: 'd2',
 				preview: 'image/theme/d2/preview@2x.png',
 			},
-			{
-				title: 'Element',
-				name: 'element',
-				preview: 'image/theme/element/preview@2x.png',
-			},
 		],
 	},
 	// 是否默认开启页面切换动画

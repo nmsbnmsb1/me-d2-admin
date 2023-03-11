@@ -1,5 +1,5 @@
 import cookies from './util.cookies';
-import db from './util.db';
+import db, { dbGet } from './util.db';
 import log from './util.log';
 
 const util = {
@@ -29,6 +29,16 @@ util.open = function (url) {
 	document.body.appendChild(a);
 	a.click();
 	document.body.removeChild(document.getElementById('d2admin-link-temp'));
+};
+
+util.cancelDefine = function (m) {
+	let newObj = {};
+	for (const k in m) {
+		if (m[k].id != k) {
+			newObj[k] = { ...m[k] };
+		}
+	}
+	return newObj;
 };
 
 export default util;

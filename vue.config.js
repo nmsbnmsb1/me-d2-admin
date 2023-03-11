@@ -18,6 +18,12 @@ const pages = {
 		filename: 'index.html',
 		chunks: ['manifest', 'index', 'chunk-index', 'chunk-vendor', 'chunk-common', 'chunk-vue', 'chunk-element'],
 	},
+	admin: {
+		entry: 'src.admin/main.js',
+		template: 'public/admin.html',
+		filename: 'admin.html',
+		chunks: ['manifest', 'admin', 'chunk-index', 'chunk-vendor', 'chunk-common', 'chunk-vue', 'chunk-element'],
+	},
 	mobile: {
 		entry: 'src.mobile/main.js',
 		template: 'public/mobile.html',
@@ -42,6 +48,14 @@ const cdn = {
 		// }
 	],
 	// Which external dependencies related to mobile page are introduced in the form of CDN links
+	admin: [
+		// {
+		//   name: 'axios',
+		//   library: 'axios',
+		//   js: 'https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js',
+		//   css: ''
+		// }
+	],
 	mobile: [
 		// {
 		//   name: 'axios',
@@ -231,6 +245,7 @@ module.exports = {
 			.end();
 		// set alias
 		config.resolve.alias.set('@.mobile', resolve('src.mobile'));
+		config.resolve.alias.set('@.admin', resolve('src.admin'));
 	},
 	// 不输出 map 文件
 	productionSourceMap: false,

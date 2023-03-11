@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import Adapter from 'axios-mock-adapter';
+//import Adapter from 'axios-mock-adapter';
 import { get } from 'lodash';
 import qs from 'qs';
 import util from '@/libs/util';
@@ -155,8 +155,8 @@ export const service = createService();
 export const request = createRequest(service);
 
 // 用于模拟网络请求的实例和请求方法
-export const serviceForMock = createService();
-export const requestForMock = createRequest(serviceForMock);
+// export const serviceForMock = createService();
+// export const requestForMock = createRequest(serviceForMock);
 
 // 网络请求数据模拟工具
-export const mock = new Adapter(serviceForMock);
+//export const mock = new Adapter(serviceForMock);

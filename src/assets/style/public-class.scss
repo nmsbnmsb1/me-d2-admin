@@ -5,7 +5,7 @@
 // 补丁 element
 @import '~@/assets/style/fixed/element.scss';
 // 补丁 markdown
-@import '~@/assets/style/fixed/markdown.scss';
+//@import '~@/assets/style/fixed/markdown.scss';
 // 补丁 n-progress
 @import '~@/assets/style/fixed/n-progress.scss';
 // 补丁 vue-splitpane
@@ -65,3 +65,28 @@ $sizes: (0, 5, 10, 15, 20);
 .#{$prefix}-pr { padding-right: 20px !important; }
 .#{$prefix}-pb { padding-bottom: 20px !important; }
 .#{$prefix}-pl { padding-left: 20px !important; }
+
+
+
+// picture
+// .el-upload--picture-card {
+// 	&:hover {
+// 		@extend .primary-hover;
+// 	}
+// }
+
+// .el-loading-spinner{
+// 	left:50%;
+// }
+
+// table
+.el-table{
+	border: 1px solid $color-border-1;
+  
+	th {
+	  background-color: $color-bg-table !important;
+	  >.cell {
+		color: $color-text-main;
+	  }
+	}
+}

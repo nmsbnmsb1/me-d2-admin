@@ -69,8 +69,6 @@
 
 <script>
 import Vue from 'vue';
-import { mapActions } from 'vuex';
-import COS from 'cos-js-sdk-v5';
 import Constants from '@/libs/constants';
 
 export default {
@@ -82,7 +80,7 @@ export default {
 		domain: { type: String, default: Constants.CDN },
 		dirname: { default: '' },
 		fileName: { type: String },
-		bucket: { type: Object, default: () => Constants.Buckets.cdn },
+		bucket: { type: Object, default: () => Constants.Buckets.default },
 		//
 		limit: { type: Number, default: 1 },
 		fileTypes: { type: Array },
@@ -121,8 +119,6 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions('user', ['getUploadKey']),
-		//
 		isImg(file) {
 			if (file.type) return file.type.startsWith('image/');
 			if (file.url) {
@@ -252,27 +248,42 @@ export default {
 			//
 			Vue.set(file, 'status', 'uploading');
 			Vue.set(file, 'percentage', 1);
-			this.getUploadKey().then((uploadKey) => {
-				new COS({ SecretId: uploadKey.secretID, SecretKey: uploadKey.secretKey, SecurityToken: uploadKey.token }).putObject(
-					{
-						Bucket: this.bucket.bucket,
-						Region: this.bucket.region,
-						Key: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
-						Body: param.file,
-						ProgressInterval: 10,
-						onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
-					},
-					(err, data) => {
-						if (!err) {
-							Vue.set(file, 'status', 'success');
-							p.resolve(true);
-						} else {
-							Vue.set(file, 'status', 'error');
-							p.reject('error');
-						}
-					}
-				);
-			});
+			this.$store
+				.dispatch('user/upload', {
+					bucket: this.bucket,
+					filename: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
+					body: param.file,
+					onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
+				})
+				.then(() => {
+					Vue.set(file, 'status', 'success');
+					p.resolve(true);
+				})
+				.catch((err) => {
+					Vue.set(file, 'status', 'error');
+					p.reject(err);
+				});
+			// this.getUploadKey().then((uploadKey) => {
+			// 	new COS({ SecretId: uploadKey.secretID, SecretKey: uploadKey.secretKey, SecurityToken: uploadKey.token }).putObject(
+			// 		{
+			// 			Bucket: this.bucket.bucket,
+			// 			Region: this.bucket.region,
+			// 			Key: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
+			// 			Body: param.file,
+			// 			ProgressInterval: 10,
+			// 			onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
+			// 		},
+			// 		(err, data) => {
+			// 			if (!err) {
+			// 				Vue.set(file, 'status', 'success');
+			// 				p.resolve(true);
+			// 			} else {
+			// 				Vue.set(file, 'status', 'error');
+			// 				p.reject('error');
+			// 			}
+			// 		}
+			// 	);
+			// });
 		},
 	},
 };
