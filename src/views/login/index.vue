@@ -83,7 +83,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import localeMixin from '@/locales/mixin.js';
 import Constants from '@/constants';
 

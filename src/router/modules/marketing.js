@@ -13,7 +13,7 @@ export const base = {
 	children: [
 		{ path: 'index', meta: { menu: true, title: '首页', icon: 'home' } },
 		{ path: 'edit_profile', meta: { title: '编辑资料' } },
-		//探究管理
+		//管理
 		{
 			path: 'guanli',
 			meta: { menu: true, title: '管理', icon: 'cogs' },
