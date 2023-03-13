@@ -10,7 +10,11 @@ function handleRoutes(routes, flattens, imports) {
 			handleRoutes(r, flattens, imports);
 		} else {
 			if (!r.component) {
-				r.component = (imports || _import)(r.path.substring(1));
+				let p = r.path.substring(1);
+				//有时候path可以携带参数
+				if (p.indexOf('/:') > 0) p = p.split('/:')[0];
+				//
+				r.component = (imports || _import)(p);
 			}
 			flattens.push(r);
 		}

@@ -32,7 +32,11 @@ export const base = {
 			children: [
 				{ path: 'on', meta: { menu: true, cache: true, title: '开启缓存' } },
 				{ path: 'off', meta: { menu: true, title: '关闭缓存' } },
-				//{ path: 'params/:id', meta: { menu: true, cache: true, title: '带参路由缓存' }, props: true },
+				{
+					path: 'params/:id',
+					meta: { menu: true, cache: true, title: '带参路由缓存' },
+					props: true,
+				},
 			],
 		},
 		{
@@ -40,7 +44,7 @@ export const base = {
 			meta: { menu: true, title: '传参', icon: 'folder' },
 			children: [
 				{ path: 'send', meta: { menu: true, title: '参数传递 发送' } },
-				//{ path: 'get/:username', meta: { menu: true, title: '参数传递 接收' } },
+				{ path: 'get/:username', meta: { menu: true, title: '参数传递 接收' } },
 			],
 		},
 		//
