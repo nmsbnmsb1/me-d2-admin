@@ -23,7 +23,7 @@
 			</el-row>
 		</el-popover>
 		<span v-popover:pop>
-			<el-tag type="info" class="icon-tag">
+			<el-tag type="info" class="icon-tag" style="font-size: 16px; width: 48px; height: 32px">
 				<i :class="'fa fa-' + icon"></i>
 			</el-tag>
 			<span style="font-size: 16px">{{ icon }}</span>
