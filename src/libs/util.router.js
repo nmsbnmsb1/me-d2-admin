@@ -53,6 +53,7 @@ function handleMenu(routes, children) {
 export function $menu(routes) {
 	let menu = {};
 	menu.path = routes.path;
+	menu.title = routes.meta.title || '';
 	if (routes.meta.auth && routes.meta.roles) menu.roles = [...routes.meta.roles];
 	menu.children = [];
 	handleMenu(routes, menu.children);

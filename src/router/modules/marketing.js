@@ -7,7 +7,7 @@ const { marketing } = Constants.Roles;
 export const base = {
 	path: '/marketing',
 	name: 'marketing',
-	meta: { menu: true, auth: true, roles: [marketing.id] },
+	meta: { menu: true, auth: true, title: '市场管理', roles: [marketing.id] },
 	redirect: '/marketing/index',
 	component: layoutHeaderAside,
 	children: [

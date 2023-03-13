@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { calMenu } from '@/libs/util.menu';
+import Constants from './constants';
 
 export default function (App) {
 	return {
@@ -34,15 +35,17 @@ export default function (App) {
 					if (_side.length > 0) children = calMenu(_side[0].children);
 					this.$store.commit('d2admin/menu/asideSet', children);
 					//
-					// let key = Constants.Roles[this.$store.state.user.currentRole.role_id]?.key || '';
-					// if (key !== menuHeader[0].key) {
-					// 	menuHeader[0].key = key;
-					// 	menuHeader[0].path = `/${key}/index`;
-					// 	// 设置顶栏菜单
-					// 	this.$store.commit('d2admin/menu/headerSet', menuHeader);
-					// 	// 初始化菜单搜索功能
-					// 	this.$store.commit('d2admin/search/init', menuHeader);
-					// }
+					let key = Constants.Roles[this.$store.state.d2admin.user.role_id]?.key || '';
+					if (!Vue.prototype.$menuHeader || Vue.prototype.$menuHeader.length <= 0) return;
+					if (key !== Vue.prototype.$menuHeader[0].key) {
+						Vue.prototype.$menuHeader[0].key = key;
+						Vue.prototype.$menuHeader[0].path = `/${key}/index`;
+						// 设置顶栏菜单
+						this.$store.commit('d2admin/menu/headerSet', Vue.prototype.$menuHeader);
+						// 初始化菜单搜索功能
+						this.$store.commit('d2admin/search/init', Vue.prototype.$menuHeader);
+						this.$store.commit('d2admin/search/init', Vue.prototype.$menuAside);
+					}
 				},
 				immediate: true,
 			},

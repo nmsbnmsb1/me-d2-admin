@@ -19,13 +19,19 @@
 				<!-- <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
 					<d2-icon name="bars" />
 				</div> -->
-				<!-- <d2-menu-header flex-box="1" /> -->
+				<d2-menu-header flex-box="1" />
 				<!-- 顶栏右侧 -->
 				<div class="d2-header-right" flex-box="0">
 					<!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
-					<d2-header-search @click="handleSearchClick" />
-					<d2-header-log />
-					<d2-header-fullscreen />
+					<d2-header-search v-if="$Setting.search.enable" @click="handleSearchClick" />
+					<d2-header-log v-if="$Setting.log.enable" />
+					<d2-header-fullscreen v-if="$Setting.fullscreen.enable" />
+					<!-- -->
+					<d2-header-theme v-if="$Setting.theme.enable" />
+					<d2-header-size v-if="$Setting.size.enable" />
+					<d2-header-locales v-if="$Setting.locales.enable" />
+					<d2-header-color v-if="$Setting.color.enable" />
+					<!-- -->
 					<d2-header-user />
 				</div>
 			</div>
@@ -78,12 +84,18 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import Constants from '@/constants';
 import d2MenuSide from './components/menu-side';
-//import d2MenuHeader from './components/menu-header';
+import d2MenuHeader from './components/menu-header';
 import d2Tabs from './components/tabs';
 import d2HeaderFullscreen from './components/header-fullscreen';
 import d2HeaderSearch from './components/header-search';
 import d2HeaderUser from './components/header-user';
 import d2HeaderLog from './components/header-log';
+//
+import d2HeaderTheme from './components/header-theme';
+import d2HeaderSize from './components/header-size';
+import d2HeaderLocales from './components/header-locales';
+import d2HeaderColor from './components/header-color';
+//
 import mixinSearch from './mixins/search';
 
 export default {
@@ -91,12 +103,17 @@ export default {
 	mixins: [mixinSearch],
 	components: {
 		d2MenuSide,
-		//d2MenuHeader,
+		d2MenuHeader,
 		d2Tabs,
 		d2HeaderFullscreen,
 		d2HeaderSearch,
 		d2HeaderUser,
 		d2HeaderLog,
+		//
+		d2HeaderTheme,
+		d2HeaderSize,
+		d2HeaderLocales,
+		d2HeaderColor,
 	},
 	data() {
 		return {

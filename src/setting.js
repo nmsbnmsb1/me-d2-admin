@@ -23,11 +23,12 @@ export default {
 		],
 	},
 	// 菜单搜索
-	search: {
-		enable: true,
-	},
+	search: { enable: true },
+	log: { enable: true },
+	fullscreen: { enable: true },
 	// 注册的主题
 	theme: {
+		enable: true,
 		list: [
 			{
 				title: 'd2admin 经典',
@@ -36,6 +37,9 @@ export default {
 			},
 		],
 	},
+	size: { enable: true },
+	locales: { enable: true },
+	color: { enable: true },
 	// 是否默认开启页面切换动画
 	transition: {
 		active: true,

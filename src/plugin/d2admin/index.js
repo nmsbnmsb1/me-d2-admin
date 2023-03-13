@@ -14,6 +14,7 @@ import i18n from '@/locales';
 import pluginError from '@/plugin/error';
 import pluginLog from '@/plugin/log';
 import pluginOpen from '@/plugin/open';
+import Setting from '@/setting';
 //
 import pluginConstants from '@/constants';
 import pluginHelper from '@/plugin/helper';
@@ -40,6 +41,7 @@ export default {
 		Vue.use(pluginError);
 		Vue.use(pluginLog);
 		Vue.use(pluginOpen);
+		Vue.prototype.$Setting = Setting;
 
 		//custom
 		Vue.use(pluginConstants);

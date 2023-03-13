@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="d2-multiple-page-control-btn" flex-box="0">
-			<el-dropdown size="default" split-button @click="closeAll" @command="(command) => handleControlItemClick(command)">
+			<el-dropdown size="default" split-button @click="closeAll()" @command="(command) => handleControlItemClick(command)">
 				<d2-icon name="times-circle" />
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="left">

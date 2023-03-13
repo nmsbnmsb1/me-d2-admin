@@ -1,19 +1,17 @@
 import Vue from 'vue';
 import { getBaseMenus, setModules, createHeaderMenu, createSideMenu } from './create_menu';
+import components from './modules/components';
+import playground from './modules/playground';
+import plugins from './modules/plugins';
 
 // 菜单 顶栏
-// export const menuHeader = supplementPath([
-// 	{ path: '/index', title: '首页', icon: 'home', key: '' },
-// 	//demo
-// 	...(() => {
-// 		const modules = [];
-// 		const files = require.context('./modules', true, /\.js$/);
-// 		files.keys().forEach((key) => {
-// 			if (key.startsWith('./demo-')) modules.push(files(key).default);
-// 		});
-// 		return modules;
-// 	})(),
-// ]);
+Vue.prototype.$menuHeader = createHeaderMenu([
+	//...getBaseMenus(),
+	components,
+	playground,
+	plugins,
+	//
+]);
 
 //
 Vue.prototype.$menuAside = createSideMenu([

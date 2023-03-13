@@ -7,7 +7,10 @@ export function getBaseMenus() {
 			path: '/',
 			title: '首页',
 			icon: 'home',
-			children: [{ path: '/log', title: '前端日志', icon: 'bug' }],
+			children: [
+				{ path: '/log', title: '前端日志', icon: 'bug' },
+				//
+			],
 		},
 	];
 }
