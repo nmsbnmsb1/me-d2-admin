@@ -153,7 +153,6 @@ export default {
 					.then(() => {
 						//loading.close();
 						//进入对应角色的页面
-						console.log(this.$store.state.user);
 						//
 						if (this.$route.query.redirect) this.$router.replace(this.$route.query.redirect);
 						else if (Constants.Roles[this.$store.state.user.role.id]) this.$router.replace(`/${Constants.Roles[this.$store.state.user.role.id].key}`);
