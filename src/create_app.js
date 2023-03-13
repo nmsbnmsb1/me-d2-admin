@@ -34,7 +34,7 @@ export default function (App) {
 					if (_side.length > 0) children = calMenu(_side[0].children);
 					this.$store.commit('d2admin/menu/asideSet', children);
 					//
-					// let key = Constants.Roles[this.$store.state.user.currentRole.id]?.key || '';
+					// let key = Constants.Roles[this.$store.state.user.currentRole.role_id]?.key || '';
 					// if (key !== menuHeader[0].key) {
 					// 	menuHeader[0].key = key;
 					// 	menuHeader[0].path = `/${key}/index`;

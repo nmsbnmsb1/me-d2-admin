@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="d2-multiple-page-control-btn" flex-box="0">
-			<el-dropdown size="default" split-button @click="closeAll()" @command="(command) => handleControlItemClick(command)">
+			<el-dropdown size="default" split-button @click="closeAll" @command="(command) => handleControlItemClick(command)">
 				<d2-icon name="times-circle" />
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item command="left">
@@ -45,10 +45,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import Sortable from 'sortablejs';
+import Constants from '@/constants';
 import D2Contextmenu from '../contextmenu';
 import D2ContextmenuList from '../contextmenu/components/contentmenuList';
-import Sortable from 'sortablejs';
-import Constants from '@/libs/constants';
 
 export default {
 	components: {
@@ -78,7 +78,7 @@ export default {
 		...mapActions('d2admin/page', ['close', 'closeLeft', 'closeRight', 'closeOther', 'closeAll', 'openedSort']),
 		//
 		isIndex(page) {
-			let key = Constants.Roles[this.$storeInstance.state.user.currentRole.id]?.key;
+			let key = Constants.Roles[this.$storeInstance.state.d2admin.user.role_id]?.key;
 			return key ? page === `/${key}/index` : page.endsWith('/index');
 		},
 		/**

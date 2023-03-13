@@ -1,7 +1,7 @@
 import low from 'lowdb';
 import LocalStorage from 'lowdb/adapters/LocalStorage';
-import util from '@/libs/util';
 import { cloneDeep } from 'lodash';
+import util from '@/libs/util';
 
 const adapter = new LocalStorage(`${process.env.VUE_APP_ID}-${process.env.VUE_APP_VERSION}`);
 const db = low(adapter);

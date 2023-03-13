@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { cloneDeep, uniq, get, merge } from 'lodash';
 import setting from '@/setting.js';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 // 判定是否需要缓存
 const isKeepAlive = (data) => get(data, 'meta.cache', false);
@@ -40,7 +40,7 @@ export default {
 		 */
 		async openedLoad({ state, commit, dispatch, rootState }) {
 			// store 赋值
-			const role_id = rootState.user.currentRole.id;
+			const role_id = rootState.d2admin.user.role_id;
 			const value = await dispatch(
 				'd2admin/db/get',
 				{
@@ -251,7 +251,7 @@ export default {
 		 */
 		async closeLeft({ state, commit, dispatch, rootState }, { pageSelect } = {}) {
 			const pageAim = pageSelect || state.current;
-			let key = Constants.Roles[rootState.user.currentRole.id]?.key;
+			let key = Constants.Roles[rootState.d2admin.user.role_id]?.key;
 			let currentIndex = 0;
 			state.opened.forEach((page, index) => {
 				if (page.fullPath === pageAim) currentIndex = index;
@@ -281,7 +281,7 @@ export default {
 		 */
 		async closeRight({ state, commit, dispatch, rootState }, { pageSelect } = {}) {
 			const pageAim = pageSelect || state.current;
-			let key = Constants.Roles[rootState.user.currentRole.id]?.key;
+			let key = Constants.Roles[rootState.d2admin.user.role_id]?.key;
 			let currentIndex = 0;
 			state.opened.forEach((page, index) => {
 				if (page.fullPath === pageAim) currentIndex = index;
@@ -309,7 +309,7 @@ export default {
 		 */
 		async closeOther({ state, commit, dispatch, rootState }, { pageSelect } = {}) {
 			const pageAim = pageSelect || state.current;
-			let key = Constants.Roles[rootState.user.currentRole.id]?.key;
+			let key = Constants.Roles[rootState.d2admin.user.role_id]?.key;
 			let currentIndex = 0;
 			state.opened.forEach((page, index) => {
 				if (page.fullPath === pageAim) currentIndex = index;
@@ -336,7 +336,7 @@ export default {
 		 */
 		async closeAll({ state, commit, dispatch, rootState }, includeIndex = false) {
 			// 删除打开的页面 并在缓存设置中删除
-			let key = Constants.Roles[rootState.user.currentRole.id]?.key;
+			let key = Constants.Roles[rootState.d2admin.user.role_id]?.key;
 			for (let i = state.opened.length - 1; i >= 0; i--) {
 				if (!includeIndex) {
 					if (!key && state.opened[i].name === 'index') continue;

@@ -22,7 +22,7 @@ const pages = {
 		entry: 'src.admin/main.js',
 		template: 'public/admin.html',
 		filename: 'admin.html',
-		chunks: ['manifest', 'admin', 'chunk-index', 'chunk-vendor', 'chunk-common', 'chunk-vue', 'chunk-element'],
+		chunks: ['manifest', 'admin', 'chunk-admin', 'chunk-vendor', 'chunk-common', 'chunk-vue', 'chunk-element'],
 	},
 	mobile: {
 		entry: 'src.mobile/main.js',
@@ -87,7 +87,7 @@ module.exports = {
 	css: {
 		loaderOptions: {
 			sass: {
-				additionalData: '@use "@/assets/style/public.scss" as *;',
+				additionalData: '@use "@/assets/styles/public.scss" as *;',
 			},
 			less: {
 				lessOptions: {
@@ -147,6 +147,15 @@ module.exports = {
 				// External dependencies that are only used by the index page
 				index: {
 					name: 'chunk-index',
+					chunks: 'all',
+					minChunks: 1,
+					test: /[\\/]node_modules[\\/](sortablejs|screenfull|nprogress|hotkeys-js|fuse\.js|better-scroll|lowdb|shortid)[\\/]/,
+					priority: 3,
+					reuseExistingChunk: true,
+					enforce: true,
+				},
+				admin: {
+					name: 'chunk-admin',
 					chunks: 'all',
 					minChunks: 1,
 					test: /[\\/]node_modules[\\/](sortablejs|screenfull|nprogress|hotkeys-js|fuse\.js|better-scroll|lowdb|shortid)[\\/]/,
@@ -244,8 +253,9 @@ module.exports = {
 			.exclude.add(resolve('src/assets/svg-icons/icons'))
 			.end();
 		// set alias
-		config.resolve.alias.set('@.mobile', resolve('src.mobile'));
+		config.resolve.alias.set('@', resolve('src'));
 		config.resolve.alias.set('@.admin', resolve('src.admin'));
+		config.resolve.alias.set('@.mobile', resolve('src.mobile'));
 	},
 	// 不输出 map 文件
 	productionSourceMap: false,

@@ -8,14 +8,14 @@ import '@/components';
 // svg 图标
 import '@/assets/svg-icons';
 // 国际化
-import i18n from '@/locales/i18n';
+import i18n from '@/locales';
 
 // 功能插件
 import pluginError from '@/plugin/error';
 import pluginLog from '@/plugin/log';
 import pluginOpen from '@/plugin/open';
 //
-import pluginConstants from '@/plugin/constants';
+import pluginConstants from '@/constants';
 import pluginHelper from '@/plugin/helper';
 import pluginFilters from '@/plugin/filters';
 

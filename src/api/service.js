@@ -159,4 +159,4 @@ export const request = createRequest(service);
 // export const requestForMock = createRequest(serviceForMock);
 
 // 网络请求数据模拟工具
-//export const mock = new Adapter(serviceForMock);
+// export const mock = new Adapter(serviceForMock);

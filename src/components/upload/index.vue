@@ -69,7 +69,7 @@
 
 <script>
 import Vue from 'vue';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 export default {
 	props: {

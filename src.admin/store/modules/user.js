@@ -1,82 +1,47 @@
 import Vue from 'vue';
 import { MessageBox } from 'element-ui';
-import md5 from 'js-md5';
 import { request } from '@/api';
-import util from '@/libs/util.js';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 export default {
 	namespaced: true,
 	state: {
 		hasToken: false,
-		// 用户信息
 		user: {},
-		currentRole: {},
+		role: {},
 	},
 	actions: {
 		async loginByToken({ state, dispatch }) {
 			if (state.hasToken) return Promise.resolve();
 			//
-			let user;
-			//mock
-			if (!Constants.MOCK) {
-				user = await request({ url: '/admin/loginByToken' });
-			} else {
-				user = { uuid: '0002', username: 'Admin', role_id: Constants.Roles.admin.id };
-				util.cookies.set('token', 'bbbb');
-			}
+			const user = await request({ url: '/admin/loginByToken' });
 			await dispatch('onLogin', user);
 		},
-		async loginByUsername({ dispatch }, { username, password } = {}) {
-			password = md5(password);
-			//
-			let user;
-			//mock
-			if (!Constants.MOCK) {
-				user = await request({ url: '/admin/loginByUsername' });
-			} else {
-				user = { uuid: '0002', username: 'Admin', role_id: Constants.Roles.admin.id };
-				util.cookies.set('token', 'bbbb');
-			}
+		async loginByUsername({ dispatch }, data) {
+			const user = await request({ url: '/admin/loginByUsername', data });
 			await dispatch('onLogin', user);
 		},
 		//统一处理登陆
 		async onLogin({ state, dispatch }, user) {
 			state.hasToken = true;
-			util.cookies.set('uuid', user.uuid);
 			state.user = user;
+			state.role = Constants.Roles.admin;
 			//
-			if (user.role_id) {
-				for (let key in Constants.Roles) {
-					let role = Constants.Roles[key];
-					if (role.id === user.role_id) {
-						state.currentRole = { ...role };
-						util.cookies.set('role_id', role.id);
-						break;
-					}
-				}
-			} else {
-				util.cookies.remove('role_id');
-			}
-			//
-			await dispatch('d2admin/app/load', undefined, { root: true });
+			await dispatch('d2admin/user/onLogin', { uuid: state.user.uuid, role_id: state.role.id }, { root: true });
 		},
 		async logout({ state, commit, dispatch }, { confirm = false } = {}) {
 			//注销
-			//注销
 			let logout = async function () {
 				try {
-					await request({ url: '/user/logout' });
+					await request({ url: '/admin/logout' });
 				} catch (e) {}
 				//
 				state.hasToken = false;
-				state.currentRole = {};
 				state.user = {};
+				state.role = {};
 				//关闭所有窗口
 				//await dispatch('d2admin/page/closeAll', true, { root: true });
-				util.cookies.remove('uuid');
-				util.cookies.remove('role_id');
-				util.cookies.remove('token');
+				await dispatch('d2admin/user/onLogout', undefined, { root: true });
 				// 跳转路由
 				Vue.prototype.$routerInstance.push({ name: 'login' });
 			};
@@ -97,30 +62,8 @@ export default {
 		},
 		//
 		//获取上传的key
-		async upload({ state, commit, dispatch }, { bucket, filename, body, onProgress }) {
-			//examples
-			//import COS from 'cos-js-sdk-v5';
-			// this.getUploadKey().then((uploadKey) => {
-			// 	new COS({ SecretId: uploadKey.secretID, SecretKey: uploadKey.secretKey, SecurityToken: uploadKey.token }).putObject(
-			// 		{
-			// 			Bucket: this.bucket.bucket,
-			// 			Region: this.bucket.region,
-			// 			Key: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
-			// 			Body: param.file,
-			// 			ProgressInterval: 10,
-			// 			onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
-			// 		},
-			// 		(err, data) => {
-			// 			if (!err) {
-			// 				Vue.set(file, 'status', 'success');
-			// 				p.resolve(true);
-			// 			} else {
-			// 				Vue.set(file, 'status', 'error');
-			// 				p.reject('error');
-			// 			}
-			// 		}
-			// 	);
-			// });
+		async upload({ state }) {
+			//
 		},
 	},
 };

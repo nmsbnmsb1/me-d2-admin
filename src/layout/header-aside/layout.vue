@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
+import Constants from '@/constants';
 import d2MenuSide from './components/menu-side';
 //import d2MenuHeader from './components/menu-header';
 import d2Tabs from './components/tabs';
@@ -82,9 +84,7 @@ import d2HeaderFullscreen from './components/header-fullscreen';
 import d2HeaderSearch from './components/header-search';
 import d2HeaderUser from './components/header-user';
 import d2HeaderLog from './components/header-log';
-import { mapState, mapGetters, mapActions } from 'vuex';
 import mixinSearch from './mixins/search';
-import Constants from '@/libs/constants';
 
 export default {
 	name: 'd2-layout-header-aside',
@@ -150,5 +150,5 @@ export default {
 
 <style lang="scss">
 // 注册主题
-@import '~@/assets/style/theme/register.scss';
+@import '~@/assets/styles/theme/register.scss';
 </style>

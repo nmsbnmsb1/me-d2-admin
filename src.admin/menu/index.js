@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { supplementPath } from '@/libs/util.menu';
+import { getBaseMenus, setModules, createHeaderMenu, createSideMenu } from '@/menu/create_menu';
 
 // 菜单 顶栏
 // export const menuHeader = supplementPath([
@@ -16,14 +16,8 @@ import { supplementPath } from '@/libs/util.menu';
 // ]);
 
 //
-//
-Vue.prototype.$menuAside = supplementPath([
-	{ path: '/', title: '首页', icon: 'home', children: [{ path: '/log', title: '前端日志', icon: 'bug' }] },
+Vue.prototype.$menuAside = createSideMenu([
+	...getBaseMenus(),
+	...setModules(require.context('./modules', true, /\.js$/)),
 	//
-	...(() => {
-		const modules = [];
-		const files = require.context('./modules', true, /\.js$/);
-		files.keys().forEach((key) => modules.push(files(key).default));
-		return modules;
-	})(),
 ]);

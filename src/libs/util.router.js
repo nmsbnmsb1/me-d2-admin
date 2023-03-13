@@ -1,30 +1,27 @@
-import Constants from '@/libs/constants';
-const { _import, _admin_import } = require('@/libs/util.import.' + process.env.NODE_ENV);
+const { _import } = require('@/libs/util.import.' + process.env.NODE_ENV);
 
-function handleRoutes(routes, flattens) {
+function handleRoutes(routes, flattens, imports) {
 	for (let r of routes.children) {
 		if (!r.path.startsWith('/')) r.path = `${routes.path}/${r.path}`;
 		if (!r.name) r.name = `${r.path.split('/').slice(1).join('.')}`;
 		//
 		if (r.children) {
 			//if (!r.component) r.component = _import(path.substring(1));
-			handleRoutes(r, flattens);
+			handleRoutes(r, flattens, imports);
 		} else {
 			if (!r.component) {
-				let p = r.path.substring(1);
-				r.component = !p.startsWith(Constants.Roles.admin.key) ? _import(p) : _admin_import(p);
+				r.component = (imports || _import)(r.path.substring(1));
 			}
 			flattens.push(r);
 		}
-		//
 		//console.log(r);
 	}
 	return routes;
 }
 
-export function $route(routes) {
+export function $route(routes, imports) {
 	let flattens = [];
-	handleRoutes(routes, flattens);
+	handleRoutes(routes, flattens, imports);
 	return { ...routes, children: flattens };
 }
 

@@ -1,5 +1,5 @@
 <template>
-	<d2-container>yunying</d2-container>
+	<d2-container>marketing</d2-container>
 </template>
 
 <script>

@@ -3,7 +3,7 @@ import { uniqueId } from 'lodash';
 
 export function calMenu(element) {
 	let menu = [];
-	let role_id = Vue.prototype.$storeInstance.state.user.currentRole.id;
+	let role_id = Vue.prototype.$storeInstance.state.d2admin.user.role_id;
 	// console.log(role);
 	element.forEach((el) => {
 		if (el.roles && !el.roles.includes(role_id)) return;

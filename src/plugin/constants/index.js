@@ -1,4 +1,4 @@
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 export default {
 	install(Vue, options) {

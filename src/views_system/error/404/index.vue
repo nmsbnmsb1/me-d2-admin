@@ -7,14 +7,14 @@
 
 <script>
 import { mapState } from 'vuex';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 export default {
 	computed: {
-		...mapState('user', ['currentRole']),
+		...mapState('user', ['role']),
 		//
 		index() {
-			return Constants.Roles[this.currentRole.id] ? `/${Constants.Roles[this.currentRole.id].key}` : '/';
+			return Constants.Roles[this.role.role_id] ? `/${Constants.Roles[this.role.role_id].key}` : '/';
 		},
 	},
 };

@@ -1,12 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { Message } from 'element-ui';
-
 // 进度条
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
+import Constants from '@/constants';
 import util from '@/libs/util.js';
+import layoutHeaderAside from '@/layout/header-aside';
+
+// 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
+const { _import_system } = require('@/libs/util.import.' + process.env.NODE_ENV);
 
 // fix vue-router NavigationDuplicated
 const VueRouterPush = VueRouter.prototype.push;
@@ -17,10 +21,62 @@ const VueRouterReplace = VueRouter.prototype.replace;
 VueRouter.prototype.replace = function replace(location) {
 	return VueRouterReplace.call(this, location).catch((err) => err);
 };
-
 Vue.use(VueRouter);
 
-export default function (routes) {
+/**
+ * 在主框架内显示
+ */
+export function getBaseFramePages(otherPages = [], pageOptions = {}) {
+	let base = {
+		path: '/',
+		//redirect: { name: 'login' },
+		redirect: () => {
+			// 方法接收目标路由作为参数
+			// return 重定向的字符串路径/路径对象
+			let role_id = Vue.prototype.$storeInstance.state.d2admin.user.role_id;
+			return { path: !role_id ? '/login' : `/${Constants.Roles[role_id].key}/index` };
+		},
+		component: layoutHeaderAside,
+	};
+	//
+	base.children = [
+		// 刷新页面 必须保留
+		{ path: 'refresh', name: 'refresh', hidden: true, component: _import_system('function/refresh') },
+		// 页面重定向 必须保留
+		{ path: 'redirect/:route*', name: 'redirect', hidden: true, component: _import_system('function/redirect') },
+	];
+	if (pageOptions.log !== false) {
+		// 系统 前端日志
+		base.children.push({ path: 'log', name: 'log', meta: { title: '前端日志', auth: true }, component: _import_system('log') });
+	}
+	//others
+	base.children.push(...otherPages);
+	//
+	return [base];
+}
+/**
+ * 错误页面
+ */
+export function getBaseErrorPages(otherPages = [], pageOptions = {}) {
+	let pages = [];
+	//
+	if (pageOptions.default !== false) {
+		//default
+		pages.push({ path: '*', name: '404', component: _import_system('error/404') });
+	}
+	pages.push(...otherPages);
+	//
+	return pages;
+}
+
+export function setModules(files, modules = []) {
+	files.keys().forEach((key) => {
+		modules.push(files(key).default);
+	});
+	return modules;
+}
+
+export function createRouter(routes) {
 	//console.log('crate', routes);
 	// 导出路由 在 main.js 里使用
 	const router = new VueRouter({ routes });
@@ -50,7 +106,7 @@ export default function (routes) {
 					return;
 				}
 				//
-				if (to.matched.some((r) => r.roles && r.roles.indexOf(store.state.user.currentRole.id) < 0)) {
+				if (to.matched.some((r) => r.roles && r.roles.indexOf(store.state.d2admin.user.role_id) < 0)) {
 					//next({ name: 'index' });
 					Message({ message: '当前角色没有权限', type: 'error', duration: 5 * 1000 });
 				} else {
@@ -78,5 +134,7 @@ export default function (routes) {
 		util.title(to.meta.title);
 	});
 
+	Vue.prototype.$routerInstance = router;
+	//
 	return router;
 }

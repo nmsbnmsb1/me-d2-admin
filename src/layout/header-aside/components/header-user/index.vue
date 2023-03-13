@@ -16,7 +16,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 export default {
 	computed: {
 		...mapState('user', ['user', 'currentRole']),

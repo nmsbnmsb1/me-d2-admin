@@ -1,10 +1,10 @@
-import Helper from '../libs/helper';
+import Helper from '@/libs/helper';
 
-function $define(m) {
+export function $define(m) {
 	for (const k in m) m[m[k].id] = m[k];
 	return m;
 }
-function $options(defaultItem, m, showField = 'name') {
+export function $options(defaultItem, m, showField = 'name') {
 	let options = [];
 	if (defaultItem) options.push(Helper.isObject(defaultItem) ? defaultItem : { id: 0, value: '请选择' });
 	for (const k in m) {
@@ -27,8 +27,8 @@ Constants.Buckets = {
 Constants.MOCK = process.env.VUE_APP_MOCK;
 //
 Constants.Roles = $define({
-	yunying: { id: '1001', name: '运营', key: 'yunying' },
-	admin: { id: '1020', name: '管理', key: 'admin' },
+	marketing: { id: '1001', name: '市场', key: 'marketing' },
+	admin: { id: '1002', name: '管理', key: 'admin' },
 });
 Constants.roleUUIDToRoleID = function (roleUUID) {
 	return parseInt(roleUUID.substring(0, 4), 10);

@@ -85,12 +85,14 @@
 import dayjs from 'dayjs';
 import { mapActions, mapState } from 'vuex';
 import localeMixin from '@/locales/mixin.js';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 export default {
 	mixins: [localeMixin],
 	data() {
 		return {
+			title: Constants.Title,
+			//
 			timeInterval: null,
 			time: dayjs().format('HH:mm:ss'),
 			// 快速选择用户
@@ -107,7 +109,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState('user', ['currentRole']),
+		...mapState('user', ['role']),
 	},
 	mounted() {
 		this.timeInterval = setInterval(() => {
@@ -118,7 +120,7 @@ export default {
 		clearInterval(this.timeInterval);
 	},
 	methods: {
-		...mapActions('user', ['loginByUsername']),
+		...mapActions('user', ['loginByPhone']),
 		//
 		refreshTime() {
 			this.time = dayjs().format('HH:mm:ss');
@@ -138,24 +140,25 @@ export default {
 		// 提交登录信息
 		submit() {
 			this.$refs.loginForm.validate((valid) => {
-				if (valid) {
-					// 登录
-					// 注意 这里的演示没有传验证码
-					// 具体需要传递的数据请自行修改代码
-					this.loginByUsername({
-						username: this.formLogin.username,
-						password: this.formLogin.password,
-					}).then(() => {
-						// 重定向对象不存在则返回顶层路径
-						//this.$router.replace(this.$route.query.redirect || '/');
+				if (!valid) return;
+				//
+				// const loading = this.$loading({
+				// 	lock: true,
+				// 	text: '正在登陆',
+				// 	spinner: 'el-icon-loading',
+				// 	background: 'rgba(0, 0, 0, 0.2)',
+				// 	customClass: 'text-white',
+				// });
+				this.loginByPhone(this.formLogin)
+					.then(() => {
 						//loading.close();
+						this.$router.replace(this.$route.query.redirect || `/${Constants.Roles[this.role.role_id].key}`);
 						//进入对应角色的页面
-						this.$router.replace(this.$route.query.redirect || `/${Constants.Roles[this.currentRole.id].key}`);
+						//this.$router.replace(`/${Constants.Roles[this.currentRole.role_id].key}`);
+					})
+					.finally(() => {
+						//loading.close();
 					});
-				} else {
-					// 登录表单校验失败
-					this.$message.error('表单校验失败，请检查');
-				}
 			});
 		},
 	},
@@ -164,6 +167,7 @@ export default {
 
 <style lang="scss">
 .page-login {
+	@extend %unable-select;
 	$backgroundColor: #f0f2f5;
 	// ---
 	background-color: $backgroundColor;

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Constants from '@/libs/constants';
+import Constants from '@/constants';
 
 //time
 export function date_ymd(time) {
