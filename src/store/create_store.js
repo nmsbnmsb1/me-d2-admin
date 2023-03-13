@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export function setModules(files, modules = { namespaced: true, modules: {} }) {
+	let m = modules.modules || modules;
 	files.keys().forEach((key) => {
 		let mkey = key.replace(/(\.\/|\.js)/g, '');
 		let de = files(key).default;
@@ -12,10 +13,10 @@ export function setModules(files, modules = { namespaced: true, modules: {} }) {
 			let tmp = mkey.split('/');
 			let mainModuleName = tmp[0];
 			let childModuleName = tmp.slice(1).join('/');
-			if (!modules[mainModuleName]) modules[mainModuleName] = { namespaced: true, modules: {} };
-			modules[mainModuleName].modules[childModuleName] = de;
+			if (!m[mainModuleName]) m[mainModuleName] = { namespaced: true, modules: {} };
+			m[mainModuleName].modules[childModuleName] = de;
 		} else {
-			modules[mkey] = de;
+			m[mkey] = de;
 		}
 	});
 	//

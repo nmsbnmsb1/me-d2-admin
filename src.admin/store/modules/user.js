@@ -14,18 +14,29 @@ export default {
 		async loginByToken({ state, dispatch }) {
 			if (state.hasToken) return Promise.resolve();
 			//
-			const user = await request({ url: '/admin/loginByToken' });
+			let user;
+			if (!Constants.MOCK) {
+				user = await request({ url: '/admin/loginByToken' });
+			} else {
+				user = { uuid: '0002', username: 'admin', role_id: Constants.Roles.admin.id };
+			}
+			//
 			await dispatch('onLogin', user);
 		},
 		async loginByUsername({ dispatch }, data) {
-			const user = await request({ url: '/admin/loginByUsername', data });
+			let user;
+			if (!Constants.MOCK) {
+				user = await request({ url: '/admin/loginByUsername' });
+			} else {
+				user = { uuid: '0002', username: 'admin', role_id: Constants.Roles.admin.id };
+			}
 			await dispatch('onLogin', user);
 		},
 		//统一处理登陆
 		async onLogin({ state, dispatch }, user) {
 			state.hasToken = true;
 			state.user = user;
-			state.role = Constants.Roles.admin;
+			state.role = { ...Constants.Roles.admin };
 			//
 			await dispatch('d2admin/user/onLogin', { uuid: state.user.uuid, role_id: state.role.id }, { root: true });
 		},

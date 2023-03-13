@@ -9,6 +9,8 @@ export default {
 	actions: {
 		//统一处理登陆
 		async onLogin({ state, dispatch }, { uuid, role_id }) {
+			state.uuid = uuid;
+			state.role_id = role_id;
 			//
 			util.cookies.set('uuid', uuid);
 			//

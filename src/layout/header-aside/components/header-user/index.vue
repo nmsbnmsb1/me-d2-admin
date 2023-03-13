@@ -19,17 +19,18 @@ import { mapState, mapActions } from 'vuex';
 import Constants from '@/constants';
 export default {
 	computed: {
-		...mapState('user', ['user', 'currentRole']),
+		...mapState('user', ['user', 'role']),
 		//
 		showname() {
-			return `${this.user.nickname || this.user.username || '未登录'} (${Constants.Roles[this.currentRole.id]?.name || ''})`;
+			return `${this.user.username || '未登录'} (${Constants.Roles[this.role.id]?.name || ''})`;
 		},
 	},
 	methods: {
 		...mapActions('user', ['logout']),
 		//
 		onProfile() {
-			this.$router.push('/profile/edit');
+			let key = Constants.Roles[this.role.id]?.key;
+			if (key) this.$router.push(`/${key}/edit_profile`);
 		},
 		logOff() {
 			this.logout({ confirm: true });

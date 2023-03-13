@@ -15,14 +15,11 @@ export default {
 	// 在读取持久化数据失败时默认页面
 	page: {
 		opened: [
-			{
-				name: 'index',
-				fullPath: '/index',
-				meta: {
-					title: '首页',
-					auth: false,
-				},
-			},
+			// {
+			// 	name: 'index',
+			// 	fullPath: '/index',
+			// 	meta: { title: '首页', auth: false },
+			// },
 		],
 	},
 	// 菜单搜索

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { MessageBox } from 'element-ui';
 import { request } from '@/api';
 import Constants from '@/constants';
+import util from '@/libs/util.js';
 
 export default {
 	namespaced: true,
@@ -14,15 +15,24 @@ export default {
 		async loginByToken({ state, dispatch }) {
 			if (state.hasToken) return Promise.resolve();
 			//
-			const user = await request({ url: '/user/loginByToken' });
-			await dispatch('onLogin', user);
-		},
-		async loginByPhone({ dispatch }, data) {
-			const user = await request({ url: '/user/loginByPhone', data });
+			let user;
+			if (!Constants.MOCK) {
+				user = await request({ url: '/user/loginByToken' });
+			} else {
+				user = { uuid: '0001', username: 'marketing', role_id: Constants.Roles.marketing.id };
+			}
+			//
 			await dispatch('onLogin', user);
 		},
 		async loginByUsername({ dispatch }, data) {
-			const user = await request({ url: '/user/loginByUsername', data });
+			let user;
+			if (!Constants.MOCK) {
+				user = await request({ url: '/user/loginByUsername' });
+			} else {
+				user = { uuid: '0001', username: 'marketing', role_id: Constants.Roles.marketing.id };
+				util.cookies.set('token', 'aaaa');
+			}
+			//
 			await dispatch('onLogin', user);
 		},
 		//统一处理登陆
@@ -46,9 +56,11 @@ export default {
 		async logout({ state, commit, dispatch }, { confirm = false } = {}) {
 			//注销
 			let logout = async function () {
-				try {
-					await request({ url: '/guanli/user/logout' });
-				} catch (e) {}
+				if (!Constants.MOCK) {
+					try {
+						await request({ url: '/guanli/user/logout' });
+					} catch (e) {}
+				}
 				//
 				state.hasToken = false;
 				state.user = {};

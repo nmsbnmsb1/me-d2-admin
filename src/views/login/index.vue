@@ -108,9 +108,7 @@ export default {
 			},
 		};
 	},
-	computed: {
-		...mapState('user', ['role']),
-	},
+	computed: {},
 	mounted() {
 		this.timeInterval = setInterval(() => {
 			this.refreshTime();
@@ -120,7 +118,7 @@ export default {
 		clearInterval(this.timeInterval);
 	},
 	methods: {
-		...mapActions('user', ['loginByPhone']),
+		...mapActions('user', ['loginByUsername']),
 		//
 		refreshTime() {
 			this.time = dayjs().format('HH:mm:ss');
@@ -142,22 +140,25 @@ export default {
 			this.$refs.loginForm.validate((valid) => {
 				if (!valid) return;
 				//
-				// const loading = this.$loading({
-				// 	lock: true,
-				// 	text: '正在登陆',
-				// 	spinner: 'el-icon-loading',
-				// 	background: 'rgba(0, 0, 0, 0.2)',
-				// 	customClass: 'text-white',
-				// });
-				this.loginByPhone(this.formLogin)
+				const loading = this.$loading({
+					lock: true,
+					text: '正在登陆',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.2)',
+					customClass: 'text-white',
+				});
+				this.loginByUsername(this.formLogin)
 					.then(() => {
 						//loading.close();
-						this.$router.replace(this.$route.query.redirect || `/${Constants.Roles[this.role.role_id].key}`);
 						//进入对应角色的页面
-						//this.$router.replace(`/${Constants.Roles[this.currentRole.role_id].key}`);
+						if (this.$route.query.redirect) this.$router.replace(this.$route.query.redirect);
+						else if (Constants.Roles[this.$store.state.user.role.id]) this.$router.replace(`/${Constants.Roles[this.$store.state.user.role.id].key}`);
+						else {
+							this.$router.replace('/');
+						}
 					})
 					.finally(() => {
-						//loading.close();
+						loading.close();
 					});
 			});
 		},
