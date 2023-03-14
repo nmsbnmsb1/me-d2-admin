@@ -16,7 +16,7 @@ import pluginLog from '@/plugin/log';
 import pluginOpen from '@/plugin/open';
 import Setting from '@/setting';
 //
-import pluginConstants from '@/constants';
+import pluginConstants from '@/plugin/constants';
 import pluginHelper from '@/plugin/helper';
 import pluginFilters from '@/plugin/filters';
 
