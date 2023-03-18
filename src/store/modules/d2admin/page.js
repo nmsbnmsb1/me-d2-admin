@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { cloneDeep, uniq, get, merge } from 'lodash';
 import setting from '@/setting.js';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 
 // 判定是否需要缓存
 const isKeepAlive = (data) => get(data, 'meta.cache', false);

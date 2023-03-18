@@ -82,7 +82,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 import d2MenuSide from './components/menu-side';
 import d2MenuHeader from './components/menu-header';
 import d2Tabs from './components/tabs';

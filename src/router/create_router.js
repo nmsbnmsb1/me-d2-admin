@@ -5,7 +5,7 @@ import { Message } from 'element-ui';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 import util from '@/libs/util.js';
 import layoutHeaderAside from '@/layout/header-aside';
 

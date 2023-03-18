@@ -46,7 +46,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Sortable from 'sortablejs';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 import D2Contextmenu from '../contextmenu';
 import D2ContextmenuList from '../contextmenu/components/contentmenuList';
 

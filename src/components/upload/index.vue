@@ -69,23 +69,22 @@
 
 <script>
 import Vue from 'vue';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
+import Helper from '@/libs/helper';
 
 export default {
 	props: {
+		domain: { type: String, default: Constants.CDN },
 		disabled: { type: Boolean, default: false },
 		tip: { type: String },
 		uploadMode: { type: String, default: 'manual' }, //manual/slient/auto
-		//
-		domain: { type: String, default: Constants.CDN },
-		dirname: { default: '' },
-		fileName: { type: String },
-		bucket: { type: Object, default: () => Constants.Buckets.default },
 		//
 		limit: { type: Number, default: 1 },
 		fileTypes: { type: Array },
 		fileSizeKb: { type: Number, default: 0 }, //kb
 		fileSizeMb: { type: Number, default: 0 }, //mb
+		fileURLModifier: { type: Function },
+		bucket: { type: Object, default: () => Constants.Buckets.default },
 		//
 		files: { type: Array, required: true },
 	},
@@ -129,7 +128,7 @@ export default {
 		},
 		getUrl(file) {
 			if (file.blob) return file.blob;
-			if (file.url) return `${this.domain}/${this.dirname ? `${this.dirname}/` : ''}${file.url}`;
+			if (file.url) return `${this.domain}/${file.url}`;
 			return '';
 		},
 		onChange(file, filelist) {
@@ -178,7 +177,7 @@ export default {
 			}
 			//
 			file.blob = file.url;
-			file.url = file.name;
+			file.url = this.fileURLModifier ? this.fileURLModifier(file.name) : file.name;
 			file.type = file.raw.type;
 			file.status = 'ready';
 			this.filelist.push(file);
@@ -226,12 +225,8 @@ export default {
 			return Promise.all(this.queue);
 		},
 		doUpload(param) {
-			let p = {};
-			p.p = new Promise((resolve, reject) => {
-				p.resolve = resolve;
-				p.reject = reject;
-			});
-			this.queue.push(p.p);
+			let p = Helper.defer();
+			this.queue.push(p.promise);
 			//
 			let file;
 			for (let f of this.filelist) {
@@ -248,42 +243,25 @@ export default {
 			//
 			Vue.set(file, 'status', 'uploading');
 			Vue.set(file, 'percentage', 1);
+			//
 			this.$store
 				.dispatch('user/upload', {
+					file,
 					bucket: this.bucket,
-					filename: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
+					filename: file.url,
 					body: param.file,
 					onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
 				})
 				.then(() => {
+					//console.log('success');
 					Vue.set(file, 'status', 'success');
 					p.resolve(true);
 				})
 				.catch((err) => {
+					//console.log('error', err);
 					Vue.set(file, 'status', 'error');
 					p.reject(err);
 				});
-			// this.getUploadKey().then((uploadKey) => {
-			// 	new COS({ SecretId: uploadKey.secretID, SecretKey: uploadKey.secretKey, SecurityToken: uploadKey.token }).putObject(
-			// 		{
-			// 			Bucket: this.bucket.bucket,
-			// 			Region: this.bucket.region,
-			// 			Key: `${this.dirname ? `${this.dirname}/` : ''}${file.url}`,
-			// 			Body: param.file,
-			// 			ProgressInterval: 10,
-			// 			onProgress: (progressData) => Vue.set(file, 'percentage', parseInt(progressData.percent * 100)),
-			// 		},
-			// 		(err, data) => {
-			// 			if (!err) {
-			// 				Vue.set(file, 'status', 'success');
-			// 				p.resolve(true);
-			// 			} else {
-			// 				Vue.set(file, 'status', 'error');
-			// 				p.reject('error');
-			// 			}
-			// 		}
-			// 	);
-			// });
 		},
 	},
 };

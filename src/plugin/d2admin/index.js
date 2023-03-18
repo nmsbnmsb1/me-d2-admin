@@ -18,7 +18,6 @@ import Setting from '@/setting';
 //
 import pluginConstants from '@/plugin/constants';
 import pluginHelper from '@/plugin/helper';
-import pluginFilters from '@/plugin/filters';
 
 export default {
 	async install(Vue, options) {
@@ -46,6 +45,5 @@ export default {
 		//custom
 		Vue.use(pluginConstants);
 		Vue.use(pluginHelper);
-		Vue.use(pluginFilters);
 	},
 };

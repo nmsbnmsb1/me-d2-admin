@@ -1,5 +1,5 @@
 import layoutHeaderAside from '@/layout/header-aside';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 import { $route } from '@/libs/util.router';
 const { _import } = require('../util.import.' + process.env.NODE_ENV);
 

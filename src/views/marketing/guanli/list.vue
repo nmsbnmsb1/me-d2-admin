@@ -44,7 +44,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 
 export default {
 	components: {},

@@ -85,7 +85,7 @@
 import dayjs from 'dayjs';
 import { mapActions } from 'vuex';
 import localeMixin from '@/locales/mixin.js';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 
 export default {
 	mixins: [localeMixin],

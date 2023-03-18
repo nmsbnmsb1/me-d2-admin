@@ -20,6 +20,7 @@ module.exports = {
 		'vue/multi-word-component-names': 'off',
 		'prefer-const': 'off',
 		'n/no-callback-literal': 0,
+		'lines-between-class-members': 0,
 	},
 	parserOptions: {
 		parser: '@babel/eslint-parser',

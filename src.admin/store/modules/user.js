@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import { MessageBox } from 'element-ui';
 import { request } from '@/api';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
+import util from '@/libs/util.js';
 
 export default {
 	namespaced: true,
@@ -29,6 +30,7 @@ export default {
 				user = await request({ url: '/admin/loginByUsername' });
 			} else {
 				user = { uuid: '0002', username: 'admin', role_id: Constants.Roles.admin.id };
+				util.cookies.set('token', 'aaaa');
 			}
 			await dispatch('onLogin', user);
 		},
@@ -43,9 +45,12 @@ export default {
 		async logout({ state, commit, dispatch }, { confirm = false } = {}) {
 			//注销
 			let logout = async function () {
-				try {
-					await request({ url: '/admin/logout' });
-				} catch (e) {}
+				//
+				if (!Constants.MOCK) {
+					try {
+						await request({ url: '/admin/logout' });
+					} catch (e) {}
+				}
 				//
 				state.hasToken = false;
 				state.user = {};

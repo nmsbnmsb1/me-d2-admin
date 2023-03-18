@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { MessageBox } from 'element-ui';
 import { request } from '@/api';
-import Constants from '@/constants';
+import { Constants } from '@/constants';
 import util from '@/libs/util.js';
 
 export default {

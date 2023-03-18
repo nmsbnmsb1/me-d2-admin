@@ -16,10 +16,10 @@
 						ref="photoes"
 						uploadMode="slient"
 						tip="建议尺寸：240*320px，最多上传1张，大小300kb以内"
-						:dirname="dirname"
 						:files.sync="profile.photoes"
 						:fileTypes="['image/*']"
 						:fileSizeKb="300"
+						:fileURLModifier="(url) => `profile/${url}`"
 					/>
 				</el-form-item>
 			</el-form>
@@ -38,7 +38,6 @@ import { mapState, mapActions } from 'vuex';
 export default {
 	data() {
 		return {
-			dirname: '',
 			profile: { intro: '', photoes: [] },
 		};
 	},
@@ -57,9 +56,7 @@ export default {
 			let profile = { ...this.profile };
 			profile.intro = this.profile.intro || 'null';
 			if (profile.photoes[0]?.url) {
-				let url = profile.photoes[0].url;
-				if (url.startsWith('profile/')) url = url.substring(url.lastIndexOf('/') + 1);
-				profile.photo = url;
+				profile.photo = profile.photoes[0].url;
 			} else {
 				profile.photo = 'null';
 			}
@@ -75,7 +72,7 @@ export default {
 				return;
 			}
 			//console.log(profile.photo, this.currentProfile.photo);
-			this.dirname = profile.photo.substring(0, profile.photo.lastIndexOf('/'));
+			//this.dirname = profile.photo.substring(0, profile.photo.lastIndexOf('/'));
 			try {
 				await this.$refs.photoes.upload();
 			} catch (e) {}

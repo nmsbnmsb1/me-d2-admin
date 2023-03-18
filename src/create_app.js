@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { calMenu } from '@/libs/util.menu';
-import Constants from './constants';
+import { Constants } from './constants';
 
 export default function (App) {
 	return {
