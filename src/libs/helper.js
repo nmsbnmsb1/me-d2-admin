@@ -160,6 +160,7 @@ export default class Helper {
 		} else if (Helper.isBoolean(obj)) {
 			return !obj;
 		} else if (Helper.isObject(obj)) {
+			// eslint-disable-next-line
 			for (const key in obj) {
 				return false;
 			}

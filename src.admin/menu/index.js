@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { getBaseMenus, setModules, createHeaderMenu, createSideMenu } from '@/menu/create_menu';
+import { getBaseMenus, setModules, /*createHeaderMenu,*/ createSideMenu } from '@/menu/create_menu';
 
 // 菜单 顶栏
 // export const menuHeader = supplementPath([

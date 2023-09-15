@@ -1,13 +1,18 @@
-import low from 'lowdb';
-import LocalStorage from 'lowdb/adapters/LocalStorage';
-import { cloneDeep } from 'lodash';
+// import low from 'lowdb';
+// import LocalStorage from 'lowdb/adapters/LocalStorage';
+import lodash, { cloneDeep } from 'lodash';
+import { LowSync } from 'lowdb';
+import { LocalStorage } from 'lowdb/browser';
 import util from '@/libs/util';
 
-const adapter = new LocalStorage(`${process.env.VUE_APP_ID}-${process.env.VUE_APP_VERSION}`);
-const db = low(adapter);
-
-db.defaults({ sys: {}, database: {} }).write();
-
+//创建Lowdb实例
+let db = new LowSync(new LocalStorage(`${process.env.VUE_APP_ID}-${process.env.VUE_APP_VERSION}`), {});
+db.read();
+//db.defaults({ sys: {}, database: {} }).write();
+if (db.data === null) {
+	db.data = { sys: {}, database: {} };
+	db.write();
+}
 export default db;
 
 /**
@@ -19,7 +24,7 @@ export default db;
  * @param {Object} payload defaultValue {*} 初始化默认值
  * @returns {String} 可以直接使用的路径
  */
-export function pathInit({ dbName = 'database', path = '', user = true, validator = () => true, defaultValue = '' }) {
+export function pathInit({ dbName = 'database', path = '', user = true, validator, defaultValue }) {
 	let names = [`${dbName}.`];
 	//
 	let uuid = util.cookies.get('uuid');
@@ -34,9 +39,10 @@ export function pathInit({ dbName = 'database', path = '', user = true, validato
 	if (path) names.push(`.${path}`);
 	//
 	let currentPath = names.join('');
-	let value = db.get(currentPath).value();
-	if (!(value !== undefined && validator(value))) {
-		db.set(currentPath, typeof defaultValue === 'function' ? defaultValue() : defaultValue).write();
+	let value = lodash.get(db.data, currentPath);
+	if (!(value !== undefined && (!validator || validator(value)))) {
+		lodash.set(db.data, currentPath, typeof defaultValue === 'function' ? defaultValue() : defaultValue);
+		db.write();
 	}
 	return currentPath;
 }
@@ -50,7 +56,8 @@ export function pathInit({ dbName = 'database', path = '', user = true, validato
  * @param {Object} payload user {Boolean} 是否区分用户
  */
 export function dbSet({ dbName = 'database', path = '', value = '', user = false }) {
-	db.set(pathInit({ dbName, path, user }), value).write();
+	lodash.set(db.data, pathInit({ dbName, path, user }), value);
+	db.write();
 }
 
 /**
@@ -61,14 +68,14 @@ export function dbSet({ dbName = 'database', path = '', value = '', user = false
  * @param {Object} payload defaultValue {*} 取值失败的默认值
  * @param {Object} payload user {Boolean} 是否区分用户
  */
-export function dbGet({ dbName = 'database', path = '', defaultValue = '', user = false }) {
-	return cloneDeep(db.get(pathInit({ dbName, path, user, defaultValue })).value());
+export function dbGet({ dbName = 'database', path = '', defaultValue, user = false }) {
+	return cloneDeep(lodash.get(db.data, pathInit({ dbName, path, user, defaultValue })));
 }
 
 /**
  * @description 获取存储数据库对象
  * @param {Object} payload user {Boolean} 是否区分用户
  */
-export function database({ dbName = 'database', path = '', user = false, validator = () => true, defaultValue = '' } = {}) {
-	return db.get(pathInit({ dbName, path, user, validator, defaultValue }));
+export function database({ dbName = 'database', path = '', user = false, validator, defaultValue } = {}) {
+	return lodash.get(db.data, pathInit({ dbName, path, user, validator, defaultValue }));
 }

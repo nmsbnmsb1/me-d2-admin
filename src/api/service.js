@@ -153,6 +153,14 @@ function createRequest(service) {
 // 用于真实网络请求的实例和请求方法
 export const service = createService();
 export const request = createRequest(service);
+export const download = function (config) {
+	return axios({
+		method: 'get',
+		timeout: 15000,
+		baseURL: process.env.VUE_APP_API,
+		...config,
+	}).then((data) => data.data);
+};
 
 // 用于模拟网络请求的实例和请求方法
 // export const serviceForMock = createService();

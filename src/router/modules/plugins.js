@@ -11,7 +11,6 @@ export const base = {
 	redirect: { name: 'demo-plugins-index' },
 	component: layoutHeaderAside,
 	children: [
-		{ path: 'clipboard-polyfill', meta: { menu: true, title: '剪贴板访问' } },
 		{ path: 'day', meta: { menu: true, title: '日期计算' } },
 		{ path: 'export/table', meta: { menu: true, title: '导出表格' } },
 		{ path: 'export/txt', meta: { menu: true, title: '导出文本' } },

@@ -30,13 +30,12 @@ The following access addresses are built and deployed by the latest master branc
 
 | server | link | server |
 | --- | --- | --- |
-| d2.pub | [Link](https://d2.pub/d2-admin/preview) | China server |
 | github | [Link](https://d2-projects.github.io/d2-admin) | GitHub pages |
 | netlify | [Link](https://d2-admin.netlify.com) | Netlify CDN |
 
 ## Document
 
-[document on https://d2.pub](https://d2.pub/zh/doc/d2-admin/)
+[document on https://d2.pub](https://d2.pub/doc/d2-admin/)
 
 ## Features
 
@@ -110,7 +109,7 @@ The following access addresses are built and deployed by the latest master branc
 
 | Name | HomePage  | Preview | Introduction |
 | --- | --- | --- | --- |
-| Starter template | [Link](https://github.com/d2-projects/d2-admin-start-kit) | [Link](https://d2.pub/d2-admin-start-kit/preview) | The simplest version |
+| Starter template | [Link](https://github.com/d2-projects/d2-admin-start-kit) | - | The simplest version |
 
 ## Open source backend implementation
 
@@ -134,8 +133,8 @@ The following access addresses are built and deployed by the latest master branc
 
 | Name | HomePage | Preview | Introduction |
 | --- | --- | --- | --- |
-| d2-admin-xiya-go-cms | [Link](https://github.com/d2-projects/d2-admin-xiya-go-cms) | [Link](https://d2.pub/d2-admin-xiya-go-cms/preview) | D2Admin + authority system + dynamic router |
-| d2-advance | [Link](https://github.com/d2-projects/d2-advance) | [Link](https://d2.pub/d2-advance/preview) | Technical exploration inspired by D2Admin |
+| d2-admin-xiya-go-cms | [Link](https://github.com/d2-projects/d2-admin-xiya-go-cms) | - | D2Admin + authority system + dynamic router |
+| d2-advance | [Link](https://github.com/d2-projects/d2-advance) | - | Technical exploration inspired by D2Admin |
 | d2-crud-plus | [Link](https://github.com/greper/d2-crud-plus) | [Link](http://qiniu.veryreader.com/D2CrudPlusExample/index.html) | Easy development of crud function |
 | d2-crud | [Link](https://github.com/d2-projects/d2-crud) | [Link]() | Encapsulation of common operations in tables |
 | d2-admin-pm | [Link](https://github.com/wjkang/d2-admin-pm) | [Link](http://jaycewu.coding.me/d2-admin-pm) | RBAC privilege management solution based on D2Admin |

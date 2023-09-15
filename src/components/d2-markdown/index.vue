@@ -12,10 +12,10 @@ import { marked } from 'marked';
 import highlight from 'highlight.js';
 import bandupan from './plugin/baidupan';
 import 'github-markdown-css';
-import { request } from '@/api/service.js';
+import { download } from '@/api/service.js';
 
 function FILE_GET(url = '') {
-	return request({
+	return download({
 		baseURL: process.env.BASE_URL,
 		url,
 		method: 'get',

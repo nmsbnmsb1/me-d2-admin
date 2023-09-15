@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import * as clipboard from 'clipboard-polyfill';
 export default {
 	props: {
 		icon: {
@@ -54,7 +53,9 @@ export default {
 	},
 	methods: {
 		copy(text) {
-			clipboard.writeText(text);
+			//clipboard.writeText(text);
+			console.log(text);
+			navigator.clipboard.writeText(text);
 			this.$message({
 				message: `${text} 复制到剪贴板`,
 				type: 'success',

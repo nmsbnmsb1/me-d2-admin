@@ -1,5 +1,5 @@
 import cookies from './util.cookies';
-import db, { dbGet } from './util.db';
+import db from './util.db';
 import log from './util.log';
 
 const util = {
@@ -34,6 +34,7 @@ util.open = function (url) {
 util.cancelDefine = function (m) {
 	let newObj = {};
 	for (const k in m) {
+		// eslint-disable-next-line
 		if (m[k].id != k) {
 			newObj[k] = { ...m[k] };
 		}
